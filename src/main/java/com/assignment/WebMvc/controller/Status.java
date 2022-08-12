@@ -1,4 +1,4 @@
-package com.spring.mvc.assginment.springMVC.controller;
+package com.assignment.WebMvc.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,5 +11,10 @@ public class Status {
     @GetMapping("/status")
     public String status() {
         return Instant.now().toString();
+    }
+
+    @GetMapping("/")
+    public String home() {
+        return "index";
     }
 }
