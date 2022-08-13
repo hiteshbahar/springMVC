@@ -5,5 +5,5 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
     <!--to pick up all annotation in the package-->
-    <context:component-scan base-package="com.spring.mvc.assginment.springMVC"/>
+    <context:component-scan base-package="com.spring.mvc.assignment.springMVC"/>
 </beans>

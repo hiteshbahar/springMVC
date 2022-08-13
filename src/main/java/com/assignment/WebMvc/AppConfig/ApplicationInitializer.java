@@ -28,6 +28,6 @@ public class ApplicationInitializer implements WebApplicationInitializer {
                 new DispatcherServlet(context));
 
         servletRegistration.setLoadOnStartup(1);
-        servletRegistration.addMapping("/");
+        servletRegistration.addMapping("/app/*");
     }
 }
