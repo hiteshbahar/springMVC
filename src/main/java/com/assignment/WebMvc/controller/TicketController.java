@@ -35,7 +35,9 @@ public class TicketController {
         return "index";
     }
 
-    @GetMapping("/user")
+    @GetMapping(value = "/user",
+            consumes = "application/pdf",
+            produces =  "application/pdf")
     public String getTicketsForUser(@RequestParam Long id, Model model) {
         User user = new UserImpl();
         user.setId(id);
@@ -44,7 +46,9 @@ public class TicketController {
         return "index";
     }
 
-    @GetMapping("/event")
+    @GetMapping(value = "/event",
+            consumes = "application/pdf",
+            produces =  "application/pdf")
     public String getTicketsForEvent(@RequestParam Long id, Model model) {
         Event event = new EventImpl();
         event.setId(id);

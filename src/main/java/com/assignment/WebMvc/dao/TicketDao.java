@@ -20,12 +20,17 @@ public class TicketDao implements Dao<Ticket> {
 
     @Override
     public List<Ticket> getAll(Ticket ticket) {
-        List<Ticket> ticketsList = ticketMap.values().stream().collect(Collectors.toList());;
+        List<Ticket> ticketsList = ticketMap.values().stream().collect(Collectors.toList());
+        if (Objects.nonNull(ticket.getUserId()) && ticket.getUserId()!= 0) {
+            return ticketsList.stream()
+                    .filter(Objects::nonNull)
+                    .filter(t -> Objects.equals(t.getUserId(), ticket.getUserId()))
+                    .collect(Collectors.toList());
+        }
         return ticketsList.stream()
                 .filter(Objects::nonNull)
-                .filter(t -> Objects.equals(t.getUserId(), ticket.getUserId()))
+                .filter(t -> Objects.equals(t.getEventId(), ticket.getEventId()))
                 .collect(Collectors.toList());
-
     }
 
     @Override

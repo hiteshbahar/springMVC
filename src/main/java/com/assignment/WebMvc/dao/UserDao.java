@@ -48,7 +48,7 @@ public class UserDao implements Dao<User> {
         return new ArrayList<>(userMap.values())
                 .stream()
                 .filter(Objects::nonNull)
-                .filter(user -> user.getEmail().equals(email))
+                .filter(user -> user.getEmail().equalsIgnoreCase(email))
                 .findFirst()
                 .orElse(null);
     }
