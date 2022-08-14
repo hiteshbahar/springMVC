@@ -35,7 +35,8 @@ public class EventDao implements Dao<Event> {
 
     @Override
     public Event save(Event event) {
-        return eventMap.put(EVENT+event.getId(), event);
+        eventMap.put(EVENT+event.getId(), event);
+        return eventMap.get(EVENT+event.getId());
     }
 
     @Override
