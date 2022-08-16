@@ -16,7 +16,7 @@ public class ApplicationInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         //bootStrap dispatcherServlet
-
+        logger.info("Boot strapping application");
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.register(SpringConfig.class);
         registerServlet(servletContext, context);

@@ -1,6 +1,7 @@
 package com.assignment.WebMvc.AppConfig;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,9 +16,11 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 @EnableWebMvc
 @ComponentScan(basePackages = "com.assignment.WebMvc")
 public class SpringConfig implements WebMvcConfigurer {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpringConfig.class);
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
+        LOGGER.info("Inside template Resolver; setting up html views");
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setPrefix("/WEB-INF/views/");
         resolver.setSuffix(".html");
@@ -27,6 +30,7 @@ public class SpringConfig implements WebMvcConfigurer {
 
     @Bean
     public SpringTemplateEngine templateEngine() {
+        LOGGER.info("Inside template engine; tying resolver");
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
         templateEngine.setEnableSpringELCompiler(true);
@@ -35,6 +39,7 @@ public class SpringConfig implements WebMvcConfigurer {
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
+        LOGGER.info("Inside view resolver; configuring thymeleaf");
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine());
         registry.viewResolver(resolver);

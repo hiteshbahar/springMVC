@@ -1,5 +1,8 @@
 #!/bin/sh
 
+#Generating java docs
+mvn clean javadoc:javadoc
+
 if [ "$1" == "debug" ]; then
   mvndebug clean install tomcat7:run-war -f pom.xml
 else

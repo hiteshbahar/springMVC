@@ -1,8 +1,11 @@
 package com.assignment.WebMvc.controller;
 
+import com.assignment.WebMvc.exceptions.ApplicationException;
 import com.assignment.WebMvc.facade.BookingFacadeImpl;
 import com.assignment.WebMvc.model.Event;
 import com.assignment.WebMvc.model.EventImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
@@ -23,11 +26,14 @@ import java.util.List;
 @RequestMapping(value = "/event")
 public class EventController {
 
+    private static final Logger logger = LoggerFactory.getLogger(EventController.class);
+
     @Autowired
     private BookingFacadeImpl bookingFacade;
 
     @GetMapping("/{id}")
     public String getEventById(Model model, @PathVariable(value = "id") Long id) {
+        logger.info("getting event details for id {}", id);
         Event eventById = bookingFacade.getEventById(id);
         model.addAttribute("message", eventById);
         return "index";
@@ -35,6 +41,7 @@ public class EventController {
 
     @GetMapping("/title")
     public String getEventById(Model model, @RequestParam(value = "title") String title) {
+        logger.info("getting event details for title {}", title);
         List<Event> eventsByTitle = bookingFacade.getEventsByTitle(title, 1, 0);
         model.addAttribute("message", eventsByTitle);
         return "index";
@@ -42,6 +49,7 @@ public class EventController {
 
     @GetMapping("/day")
     public String getEventById(Model model, @RequestParam(value = "day") Date date) {
+        logger.info("getting event details for day {}", date);
         List<Event> eventsForDay = bookingFacade.getEventsForDay(date, 1, 0);
         model.addAttribute("message", eventsForDay);
         return "index";
@@ -49,6 +57,7 @@ public class EventController {
 
     @PostMapping(value = "/register", consumes = {"application/json"})
     public String registerEvent(@RequestBody @NonNull EventImpl event, Model model) {
+        logger.info("registering event ");
         Event createdEvent = bookingFacade.createEvent(event);
         model.addAttribute("message", createdEvent);
         return "index";
@@ -56,6 +65,7 @@ public class EventController {
 
     @PatchMapping(value = "/update", consumes = {"application/json"})
     public String updateEvent(Model model, @RequestBody @NonNull EventImpl event) {
+        logger.info("updating event for id {}", event.getId());
         Event updateEvent = bookingFacade.updateEvent(event);
         model.addAttribute("message",updateEvent);
         return "index";
@@ -64,6 +74,10 @@ public class EventController {
     @DeleteMapping("/delete/{id}")
     public String deleteEventById(Model model, @PathVariable(value = "id") Long id) {
         boolean eventStatus = bookingFacade.deleteEvent(id);
+        if (eventStatus == false) {
+            logger.debug("No event found for given id: {}", id);
+            throw new ApplicationException("No Event found for given event id: " + id, model);
+        }
         model.addAttribute("message", eventStatus);
         return "index";
     }
