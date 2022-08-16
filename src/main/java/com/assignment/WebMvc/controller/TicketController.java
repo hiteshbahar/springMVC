@@ -1,5 +1,6 @@
 package com.assignment.WebMvc.controller;
 
+import com.assignment.WebMvc.exceptions.ApplicationException;
 import com.assignment.WebMvc.facade.BookingFacadeImpl;
 import com.assignment.WebMvc.model.Event;
 import com.assignment.WebMvc.model.EventImpl;
@@ -7,6 +8,8 @@ import com.assignment.WebMvc.model.Ticket;
 import com.assignment.WebMvc.model.TicketImpl;
 import com.assignment.WebMvc.model.User;
 import com.assignment.WebMvc.model.UserImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
@@ -24,6 +27,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/ticket")
 public class TicketController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TicketController.class);
 
     @Autowired
     private BookingFacadeImpl bookingFacade;
@@ -59,8 +63,12 @@ public class TicketController {
 
     @DeleteMapping("/delete/{id}")
     public String deleteTicket(@PathVariable Long id, Model model) {
-        boolean ticketStatus = bookingFacade.deleteEvent(id);
-        model.addAttribute("message", ticketStatus);
+        boolean ticketStatus = bookingFacade.cancelTicket(id);
+        if (!ticketStatus) {
+            LOGGER.debug("No event found for given id: {}", id);
+            throw new ApplicationException("No Event found for given event id: " + id, model);
+        }
+        model.addAttribute("message", true);
         return "index";
     }
 }

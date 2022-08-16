@@ -1,8 +1,11 @@
 package com.assignment.WebMvc.controller;
 
+import com.assignment.WebMvc.exceptions.ApplicationException;
 import com.assignment.WebMvc.facade.BookingFacadeImpl;
 import com.assignment.WebMvc.model.User;
 import com.assignment.WebMvc.model.UserImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
@@ -21,6 +24,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/user")
 public class UserController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private BookingFacadeImpl bookingFacade;
@@ -63,7 +67,11 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public String deleteUserById(Model model, @PathVariable(value = "id") Long id) {
         boolean userStatus = bookingFacade.deleteUser(id);
-        model.addAttribute("message", userStatus);
+        if (!userStatus) {
+            LOGGER.debug("No event found for given id: {}", id);
+            throw new ApplicationException("No Event found for given event id: " + id, model);
+        }
+        model.addAttribute("message", true);
         return "index";
     }
 }

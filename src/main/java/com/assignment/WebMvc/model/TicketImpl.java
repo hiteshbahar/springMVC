@@ -7,11 +7,23 @@ public class TicketImpl implements Ticket {
     private long userId;
     private Category category;
 
+    public TicketImpl() {}
+
+    public TicketImpl(long id, int place, long eventId, long userId, Category category) {
+        this.id = id;
+        this.place = place;
+        this.eventId = eventId;
+        this.userId = userId;
+        this.category = category;
+    }
+
     /**
      * Ticket Id. UNIQUE.
      *
      * @return Ticket Id.
      */
+
+
     @Override
     public long getId() {
         return id;

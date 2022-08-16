@@ -40,7 +40,7 @@ public class EventController {
     }
 
     @GetMapping("/title")
-    public String getEventById(Model model, @RequestParam(value = "title") String title) {
+    public String getEventByTitle(Model model, @RequestParam(value = "title") String title) {
         logger.info("getting event details for title {}", title);
         List<Event> eventsByTitle = bookingFacade.getEventsByTitle(title, 1, 0);
         model.addAttribute("message", eventsByTitle);
@@ -48,7 +48,7 @@ public class EventController {
     }
 
     @GetMapping("/day")
-    public String getEventById(Model model, @RequestParam(value = "day") Date date) {
+    public String getEventByDay(Model model, @RequestParam(value = "day") Date date) {
         logger.info("getting event details for day {}", date);
         List<Event> eventsForDay = bookingFacade.getEventsForDay(date, 1, 0);
         model.addAttribute("message", eventsForDay);
@@ -74,11 +74,11 @@ public class EventController {
     @DeleteMapping("/delete/{id}")
     public String deleteEventById(Model model, @PathVariable(value = "id") Long id) {
         boolean eventStatus = bookingFacade.deleteEvent(id);
-        if (eventStatus == false) {
+        if (!eventStatus) {
             logger.debug("No event found for given id: {}", id);
             throw new ApplicationException("No Event found for given event id: " + id, model);
         }
-        model.addAttribute("message", eventStatus);
+        model.addAttribute("message", true);
         return "index";
     }
 }
