@@ -7,7 +7,7 @@ This is Booking ticket project, based on  Spring MVC module which has the below 
    2. event by id
 
 # How to run the project
-To run the project you require any linux based terminal and run the below script
+To run the project you require any linux based terminal, checkout the branch springBoot and run the below script
 ```shell
 run-local.sh
 ```
