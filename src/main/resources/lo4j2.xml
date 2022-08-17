@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN" monitorInterval="30">
-    <Properties>
-        <Property name="LOG_PATTERN">
-            %d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName} --- [%15.15t] %-40.40c{1.} : %m%n%ex
-        </Property>
-    </Properties>
+<Configuration status="WARN">
     <Appenders>
-        <Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
-            <PatternLayout pattern="${LOG_PATTERN}"/>
-        </Console>
+        <RollingFile name="XMLRollingfileAppender"
+                     fileName="target/logfile.xml"
+                     filePattern="target/logfile-%d{yyyy-MM-dd}-%i.log.gz">
+            <XMLLayout/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="17 kB"/>
+            </Policies>
+        </RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="com.progressivecoder.loggingdemo" level="debug" additivity="false">
-            <AppenderRef ref="ConsoleAppender" />
+        <Logger name="XML_ROLLING_FILE_APPENDER"
+                level="INFO" additivity="false">
+            <AppenderRef ref="XMLRollingfileAppender" />
         </Logger>
-
-        <Root level="info">
-            <AppenderRef ref="ConsoleAppender" />
+        <Root level="TRACE">
+            <AppenderRef ref="ConsoleAppender"/>
         </Root>
     </Loggers>
 </Configuration>

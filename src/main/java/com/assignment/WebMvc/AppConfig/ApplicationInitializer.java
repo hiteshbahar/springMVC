@@ -18,7 +18,8 @@ public class ApplicationInitializer implements WebApplicationInitializer {
         //bootStrap dispatcherServlet
         logger.info("Boot strapping application");
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.register(SpringConfig.class);
+        context.register(ApplicationConfig.class);
+//        context.register(SpringConfig.class);
         registerServlet(servletContext, context);
     }
 

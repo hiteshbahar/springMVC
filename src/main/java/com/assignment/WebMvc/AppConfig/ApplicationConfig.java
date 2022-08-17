@@ -12,11 +12,11 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
-/*@Configuration
+@Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.assignment.WebMvc")
-public class SpringConfig implements WebMvcConfigurer {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpringConfig.class);
+public class ApplicationConfig implements WebMvcConfigurer {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
@@ -44,4 +44,4 @@ public class SpringConfig implements WebMvcConfigurer {
         resolver.setTemplateEngine(templateEngine());
         registry.viewResolver(resolver);
     }
-}*/
+}

@@ -1,6 +1,6 @@
 package com.assignment.WebMvc.controller;
 
-import com.assignment.WebMvc.AppConfig.SpringConfig;
+import com.assignment.WebMvc.AppConfig.ApplicationConfig;
 import com.assignment.WebMvc.facade.BookingFacadeImpl;
 import com.assignment.WebMvc.model.Event;
 import com.assignment.WebMvc.model.Ticket;
@@ -26,7 +26,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-@ContextConfiguration(classes = SpringConfig.class)
+@ContextConfiguration(classes = ApplicationConfig.class)
 @WebMvcTest(TicketController.class)
 public class TicketControllerTest {
 

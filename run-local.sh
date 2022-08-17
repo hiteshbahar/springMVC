@@ -4,7 +4,7 @@
 mvn clean javadoc:javadoc
 
 if [ "$1" == "debug" ]; then
-  mvndebug clean install tomcat7:run-war -f pom.xml
+  mvndebug clean install spring-boot:run -f pom.xml
 else
-  mvn clean install tomcat7:run-war -f pom.xml
+  mvn clean install spring-boot:run -f pom.xml
 fi
