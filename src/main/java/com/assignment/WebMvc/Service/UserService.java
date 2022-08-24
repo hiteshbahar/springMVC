@@ -1,6 +1,5 @@
 package com.assignment.WebMvc.Service;
 
-import com.assignment.WebMvc.dao.UserDao;
 import com.assignment.WebMvc.model.User;
 import com.assignment.WebMvc.model.UserImpl;
 import com.assignment.WebMvc.repositories.userImplRepository;
@@ -15,16 +14,10 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    private UserDao userDao;
     @Autowired
     private userImplRepository userImplRepository;
 
     private static Logger logger = LoggerFactory.getLogger(UserService.class);
-
-    /*@Autowired
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
-    }*/
 
     /**
      * Gets user by its id.
@@ -34,8 +27,6 @@ public class UserService {
      */
     public User getUserById(long userId) {
         logger.debug("Getting user details for {}", userId);
-       /* return userDao.get(userId)
-                .orElse(null);*/
         return userImplRepository.findById(userId).orElse(null);
     }
 
@@ -47,7 +38,6 @@ public class UserService {
      */
     public User getUserByEmail(String email) {
         logger.debug("Getting user details for {}", email);
-//        return userDao.findByEmail(email);
         return userImplRepository.findByEmailIgnoreCase(email).orElse(null);
     }
 
@@ -62,7 +52,6 @@ public class UserService {
      */
     public List<User> getUsersByName(String name, int pageSize, int pageNum) {
         logger.debug("Getting user list for {}", name);
-//        return userDao.findByName(name)
         return userImplRepository.findByNameIgnoreCase(name)
                 .stream()
                 .limit(pageSize)
@@ -79,7 +68,6 @@ public class UserService {
         logger.debug("Creating a user");
         UserImpl user1 = new UserImpl(user.getId(), user.getName(), user.getEmail());
         return userImplRepository.save(user1);
-//        return userDao.save(user);
     }
 
     /**
@@ -90,7 +78,6 @@ public class UserService {
      */
     public User updateUser(User user) {
         logger.debug("Updating user details for {}", user.getId());
-//        return userDao.update(user);
         User userFound = userImplRepository.findById(user.getId()).orElseThrow(() -> new IllegalStateException("No User found"));
 
         return userImplRepository.save(new UserImpl(user.getId(), user.getName(), user.getEmail()));
@@ -104,7 +91,6 @@ public class UserService {
      */
     public boolean deleteUser(long userId) {
         logger.debug("Deleting user {}", userId);
-//        return userDao.delete(userId);
         userImplRepository.delete(
                 userImplRepository.findById(userId)
                         .orElseThrow(() -> new IllegalStateException("No record found for userId {}"+ userId)));

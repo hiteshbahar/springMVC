@@ -1,6 +1,5 @@
 package com.assignment.WebMvc.Service;
 
-import com.assignment.WebMvc.dao.TicketDao;
 import com.assignment.WebMvc.model.Event;
 import com.assignment.WebMvc.model.Ticket;
 import com.assignment.WebMvc.model.TicketImpl;
@@ -18,18 +17,11 @@ import java.util.stream.Collectors;
 @Service
 public class TicketService {
 
-    private TicketDao ticketDao;
     private TicketImpl ticket;
     @Autowired
     private TicketImplRepository ticketImplRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(TicketService.class);
-
-    /*@Autowired
-    public void setTicketDao(TicketDao ticketDao) {
-        this.ticketDao = ticketDao;
-    }*/
-
 
     /**
      * Book ticket for a specified event on behalf of specified user.
@@ -50,7 +42,6 @@ public class TicketService {
         ticket.setEventId(eventId);
         ticket.setPlace(place);
         ticket.setCategory(category);
-//        return ticketDao.save(ticket);
         return ticketImplRepository.save(ticket);
     }
 
@@ -66,8 +57,7 @@ public class TicketService {
         logger.debug("Getting Booked tickets for {}", user.getId());
         ticket = new TicketImpl();
         ticket.setUserId(user.getId());
-        return ticketImplRepository.findAll()
-//        return ticketDao.getAll(ticket)
+        return ticketImplRepository.findByUserId(user.getId())
                 .stream()
                 .limit(pageSize)
                 .collect(Collectors.toList());
@@ -83,9 +73,7 @@ public class TicketService {
      */
     public List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum) {
         logger.debug("Getting Tickets details for Event: {}", event.getId());
-        ticket = new TicketImpl();
-        ticket.setEventId(event.getId());
-        return ticketDao.getAll(ticket)
+        return ticketImplRepository.findByEventId(event.getId())
                 .stream()
                 .limit(pageSize)
                 .collect(Collectors.toList());
@@ -99,7 +87,6 @@ public class TicketService {
      */
     public boolean cancelTicket(long ticketId) {
         logger.debug("Cancelling ticket");
-//        return ticketDao.delete(ticketId);
         ticketImplRepository.delete(ticketImplRepository.findById(ticketId)
                 .orElseThrow(()-> new IllegalStateException("no ticket found")));
         return true;

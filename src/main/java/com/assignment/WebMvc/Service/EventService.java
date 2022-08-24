@@ -1,7 +1,6 @@
 package com.assignment.WebMvc.Service;
 
 
-import com.assignment.WebMvc.dao.EventDao;
 import com.assignment.WebMvc.model.Event;
 import com.assignment.WebMvc.model.EventImpl;
 import com.assignment.WebMvc.repositories.EventImplRepository;
@@ -19,18 +18,9 @@ import java.util.stream.Collectors;
 public class EventService {
     private final Logger logger = LoggerFactory.getLogger(EventService.class);
 
-    private EventDao eventDao;
     @Autowired
     private EventImplRepository eventImplRepository;
 
-   /* @Autowired
-    public void setEventDao(EventDao eventDao) {
-        this.eventDao = eventDao;
-    }*/
-    /*@Autowired
-    public void setEventRepository(EventRepository eventRepository) {
-        this.eventRepository = eventRepository;
-    }*/
 
     /**
      * Gets event by its id.
@@ -40,8 +30,6 @@ public class EventService {
      */
     public Event getEventById(long eventId) {
         logger.debug("Inside method getting event by id");
-//        return eventDao.get(eventId)
-//                .orElse(new EventImpl());
         return eventImplRepository.findById(eventId).orElse(new EventImpl());
     }
 
@@ -56,10 +44,6 @@ public class EventService {
      */
     public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {
         logger.debug("Inside method getting event by title");
-       /* return eventDao.findByTitle(title)
-                .stream()
-                .limit(pageSize)
-                .collect(Collectors.toList());*/
         return eventImplRepository.findByTitleIgnoreCase(title).stream()
                 .limit(pageSize)
                 .collect(Collectors.toList());
@@ -76,7 +60,6 @@ public class EventService {
      */
     public List<Event> getEventsForDay(Date day, int pageSize, int pageNum) {
         logger.debug("Inside method getting event by Day");
-//        return eventDao.findByDate(day)
         return eventImplRepository.findByDate(day)
                 .stream()
                 .limit(pageSize)
@@ -91,7 +74,6 @@ public class EventService {
      */
     public Event createEvent(EventImpl event) {
         logger.debug("Inside method creating event");
-//        return eventDao.save(event);
        return eventImplRepository.save(event);
     }
 
@@ -103,7 +85,6 @@ public class EventService {
      */
     public Event updateEvent(Event event) {
         logger.debug("Inside method updating event");
-//        return eventDao.update(event);
         Optional<EventImpl> persistedEvent = eventImplRepository.findById(event.getId());
         if (!persistedEvent.isPresent()) {
            persistedEvent.orElseThrow(() -> new IllegalStateException("No record found for event {}"+ event.getId()));
@@ -119,7 +100,6 @@ public class EventService {
      */
     public boolean deleteEvent(long eventId) {
         logger.debug("Inside method deleting event by id");
-//        return eventDao.delete(eventId);
          eventImplRepository.delete(
                 eventImplRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalStateException("No record found for event {}"+ eventId)));
