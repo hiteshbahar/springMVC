@@ -4,6 +4,7 @@ package com.assignment.WebMvc.Service;
 import com.assignment.WebMvc.dao.EventDao;
 import com.assignment.WebMvc.model.Event;
 import com.assignment.WebMvc.model.EventImpl;
+import com.assignment.WebMvc.repositories.EventImplRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,18 +12,25 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class EventService {
-    private Logger logger = LoggerFactory.getLogger(EventService.class);
+    private final Logger logger = LoggerFactory.getLogger(EventService.class);
 
     private EventDao eventDao;
-
     @Autowired
+    private EventImplRepository eventImplRepository;
+
+   /* @Autowired
     public void setEventDao(EventDao eventDao) {
         this.eventDao = eventDao;
-    }
+    }*/
+    /*@Autowired
+    public void setEventRepository(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }*/
 
     /**
      * Gets event by its id.
@@ -32,8 +40,9 @@ public class EventService {
      */
     public Event getEventById(long eventId) {
         logger.debug("Inside method getting event by id");
-        return eventDao.get(eventId)
-                .orElse(new EventImpl());
+//        return eventDao.get(eventId)
+//                .orElse(new EventImpl());
+        return eventImplRepository.findById(eventId).orElse(new EventImpl());
     }
 
     /**
@@ -47,8 +56,11 @@ public class EventService {
      */
     public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {
         logger.debug("Inside method getting event by title");
-        return eventDao.findByTitle(title)
+       /* return eventDao.findByTitle(title)
                 .stream()
+                .limit(pageSize)
+                .collect(Collectors.toList());*/
+        return eventImplRepository.findByTitleIgnoreCase(title).stream()
                 .limit(pageSize)
                 .collect(Collectors.toList());
     }
@@ -64,7 +76,8 @@ public class EventService {
      */
     public List<Event> getEventsForDay(Date day, int pageSize, int pageNum) {
         logger.debug("Inside method getting event by Day");
-        return eventDao.findByDate(day)
+//        return eventDao.findByDate(day)
+        return eventImplRepository.findByDate(day)
                 .stream()
                 .limit(pageSize)
                 .collect(Collectors.toList());
@@ -76,9 +89,10 @@ public class EventService {
      * @param event Event data.
      * @return Created Event object.
      */
-    public Event createEvent(Event event) {
+    public Event createEvent(EventImpl event) {
         logger.debug("Inside method creating event");
-        return eventDao.save(event);
+//        return eventDao.save(event);
+       return eventImplRepository.save(event);
     }
 
     /**
@@ -89,7 +103,12 @@ public class EventService {
      */
     public Event updateEvent(Event event) {
         logger.debug("Inside method updating event");
-        return eventDao.update(event);
+//        return eventDao.update(event);
+        Optional<EventImpl> persistedEvent = eventImplRepository.findById(event.getId());
+        if (!persistedEvent.isPresent()) {
+           persistedEvent.orElseThrow(() -> new IllegalStateException("No record found for event {}"+ event.getId()));
+        }
+        return eventImplRepository.save(new EventImpl(event.getId(), event.getTitle(), event.getDate()));
     }
 
     /**
@@ -100,6 +119,10 @@ public class EventService {
      */
     public boolean deleteEvent(long eventId) {
         logger.debug("Inside method deleting event by id");
-        return eventDao.delete(eventId);
+//        return eventDao.delete(eventId);
+         eventImplRepository.delete(
+                eventImplRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalStateException("No record found for event {}"+ eventId)));
+         return true;
     }
 }

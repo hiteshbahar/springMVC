@@ -1,8 +1,29 @@
 package com.assignment.WebMvc.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import java.util.Date;
 
+@Entity(name = "event")
 public class EventImpl implements Event{
+    @Id
+    @SequenceGenerator(
+            name = "event_sequence",
+            sequenceName = "event_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "event_sequence"
+    )
+    @Column(
+            name = "event_id",
+            updatable = false
+    )
     private long id;
     private String title;
     private Date date;

@@ -5,6 +5,7 @@ import com.assignment.WebMvc.model.Event;
 import com.assignment.WebMvc.model.Ticket;
 import com.assignment.WebMvc.model.TicketImpl;
 import com.assignment.WebMvc.model.User;
+import com.assignment.WebMvc.repositories.TicketImplRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +20,16 @@ public class TicketService {
 
     private TicketDao ticketDao;
     private TicketImpl ticket;
+    @Autowired
+    private TicketImplRepository ticketImplRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(TicketService.class);
 
-    @Autowired
+    /*@Autowired
     public void setTicketDao(TicketDao ticketDao) {
         this.ticketDao = ticketDao;
-    }
-
-    /*public void setTicket(TicketImpl ticket) {
-        this.ticket = ticket;
     }*/
+
 
     /**
      * Book ticket for a specified event on behalf of specified user.
@@ -50,7 +50,8 @@ public class TicketService {
         ticket.setEventId(eventId);
         ticket.setPlace(place);
         ticket.setCategory(category);
-        return ticketDao.save(ticket);
+//        return ticketDao.save(ticket);
+        return ticketImplRepository.save(ticket);
     }
 
     /**
@@ -65,7 +66,8 @@ public class TicketService {
         logger.debug("Getting Booked tickets for {}", user.getId());
         ticket = new TicketImpl();
         ticket.setUserId(user.getId());
-        return ticketDao.getAll(ticket)
+        return ticketImplRepository.findAll()
+//        return ticketDao.getAll(ticket)
                 .stream()
                 .limit(pageSize)
                 .collect(Collectors.toList());
@@ -97,6 +99,9 @@ public class TicketService {
      */
     public boolean cancelTicket(long ticketId) {
         logger.debug("Cancelling ticket");
-        return ticketDao.delete(ticketId);
+//        return ticketDao.delete(ticketId);
+        ticketImplRepository.delete(ticketImplRepository.findById(ticketId)
+                .orElseThrow(()-> new IllegalStateException("no ticket found")));
+        return true;
     }
 }

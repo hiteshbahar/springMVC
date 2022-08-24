@@ -5,6 +5,7 @@ import com.assignment.WebMvc.Service.EventService;
 import com.assignment.WebMvc.Service.TicketService;
 import com.assignment.WebMvc.Service.UserService;
 import com.assignment.WebMvc.model.Event;
+import com.assignment.WebMvc.model.EventImpl;
 import com.assignment.WebMvc.model.Ticket;
 import com.assignment.WebMvc.model.User;
 import org.slf4j.Logger;
@@ -80,7 +81,8 @@ public class BookingFacadeImpl implements BookingFacade{
      */
     @Override
     public Event createEvent(Event event) {
-        return eventService.createEvent(event);
+        EventImpl event1 = new EventImpl(event.getId(), event.getTitle(), event.getDate());
+        return eventService.createEvent(event1);
     }
 
     /**

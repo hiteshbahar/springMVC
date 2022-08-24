@@ -51,7 +51,7 @@ public class TicketControllerTest {
         this.mockMvc.perform(MockMvcRequestBuilders.get("/ticket/user?id=1")
                         .contentType(MediaType.APPLICATION_PDF)
                         .accept(MediaType.APPLICATION_PDF))
-                .andDo(print())
+//                .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("index"))
                 .andExpect(MockMvcResultMatchers.model().attribute("message", Collections.singletonList(ticket)));

@@ -1,9 +1,37 @@
 package com.assignment.WebMvc.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+
+@Entity(name = "ticket")
 public class TicketImpl implements Ticket {
+    @Id
+    @SequenceGenerator(
+            name = "ticket_sequence",
+            sequenceName = "ticket_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "ticket_sequence"
+    )
+    @Column(
+            name = "ticket_id",
+            updatable = false
+    )
     private long id;
     private int place;
+
+//    @ManyToOne(targetEntity = EventImpl.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "event_id", nullable = false)
     private long eventId;
+
+//    @ManyToOne(targetEntity = UserImpl.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "user_id", nullable = false)
     private long userId;
     private Category category;
 
