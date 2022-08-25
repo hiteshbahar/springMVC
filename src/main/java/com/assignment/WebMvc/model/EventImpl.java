@@ -20,6 +20,7 @@ public class EventImpl implements Event{
             strategy = GenerationType.SEQUENCE,
             generator = "event_sequence"
     )
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(
             name = "event_id",
             updatable = false

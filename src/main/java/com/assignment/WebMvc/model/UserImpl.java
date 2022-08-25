@@ -19,6 +19,7 @@ public class UserImpl implements User {
             strategy = GenerationType.SEQUENCE,
             generator = "user_sequence"
     )
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(
             name = "user_id",
             updatable = false

@@ -1,9 +1,9 @@
 package com.assignment.WebMvc.Service;
 
 
-import com.assignment.WebMvc.dao.UserDao;
 import com.assignment.WebMvc.model.User;
 import com.assignment.WebMvc.model.UserImpl;
+import com.assignment.WebMvc.repositories.UserImplRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +15,8 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -25,9 +27,10 @@ class UserServiceTest {
     UserService userService;
 
     @Mock
-    UserDao userDao;
+    UserImplRepository userImplRepository;
 
-    User user;
+
+    UserImpl user;
 
     @BeforeEach
     void setUp() {
@@ -36,19 +39,19 @@ class UserServiceTest {
 
     @Test
     void getUserById() {
-        when(userDao.get(user.getId())).thenReturn(Optional.ofNullable(user));
+        when(userImplRepository.findById(user.getId())).thenReturn(Optional.ofNullable(user));
         assertEquals(user.getName(), userService.getUserById(1L).getName());
     }
 
     @Test
     void getUserByEmail() {
-        when(userDao.findByEmail(anyString())).thenReturn(user);
+        when(userImplRepository.findByEmailIgnoreCase(anyString())).thenReturn(Optional.ofNullable(user));
         assertEquals(user.getEmail(), userService.getUserByEmail("someEmail@abc.com").getEmail());
     }
 
     @Test
     void getUsersByName() {
-        when(userDao.findByName(user.getName())).thenReturn(Arrays.asList(user));
+        when(userImplRepository.findByNameIgnoreCase(user.getName())).thenReturn(Arrays.asList(user));
         assertEquals(user.getName(), userService.getUsersByName("someName", 1, 0)
                 .stream()
                 .findFirst()
@@ -58,14 +61,15 @@ class UserServiceTest {
 
     @Test
     void createUser() {
-        when(userDao.save(user)).thenReturn(user);
+        when(userImplRepository.save(any())).thenReturn(user);
         assertEquals(user, userService.createUser(user));
     }
 
     @Test
     void updateUser() {
         user.setEmail("someOtherEmail@abc.com");
-        when(userDao.update(user)).thenReturn(user);
+        when(userImplRepository.findById(anyLong())).thenReturn(Optional.ofNullable(user));
+        when(userImplRepository.save(any())).thenReturn(user);
         assertEquals(user, userService.updateUser(user));
     }
 

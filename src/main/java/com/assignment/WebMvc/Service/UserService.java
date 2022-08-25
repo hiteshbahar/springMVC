@@ -2,7 +2,7 @@ package com.assignment.WebMvc.Service;
 
 import com.assignment.WebMvc.model.User;
 import com.assignment.WebMvc.model.UserImpl;
-import com.assignment.WebMvc.repositories.userImplRepository;
+import com.assignment.WebMvc.repositories.UserImplRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class UserService {
 
     @Autowired
-    private userImplRepository userImplRepository;
+    private UserImplRepository userImplRepository;
 
     private static Logger logger = LoggerFactory.getLogger(UserService.class);
 

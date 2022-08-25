@@ -19,6 +19,7 @@ public class TicketImpl implements Ticket {
             strategy = GenerationType.SEQUENCE,
             generator = "ticket_sequence"
     )
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(
             name = "ticket_id",
             updatable = false
