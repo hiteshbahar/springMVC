@@ -19,13 +19,14 @@ public class UserImpl implements User {
             strategy = GenerationType.SEQUENCE,
             generator = "user_sequence"
     )
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(
             name = "user_id",
             updatable = false
     )
     private long id;
     private String name;
+
+    @Column(unique=true)
     private String email;
 
     public UserImpl() {}

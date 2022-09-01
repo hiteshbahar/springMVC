@@ -19,7 +19,6 @@ public class TicketImpl implements Ticket {
             strategy = GenerationType.SEQUENCE,
             generator = "ticket_sequence"
     )
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(
             name = "ticket_id",
             updatable = false
@@ -27,12 +26,8 @@ public class TicketImpl implements Ticket {
     private long id;
     private int place;
 
-//    @ManyToOne(targetEntity = EventImpl.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "event_id", nullable = false)
     private long eventId;
 
-//    @ManyToOne(targetEntity = UserImpl.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "user_id", nullable = false)
     private long userId;
     private Category category;
 

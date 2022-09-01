@@ -42,17 +42,6 @@ class EventServiceTest {
 
     }
 
-    /*@Test
-    void getEventsByTitle() {
-        String title = "Marron5";
-        when(eventImplRepository.findByTitle(title)).thenReturn( Arrays.asList(event));
-        assertEquals(event.getTitle(), service.getEventsByTitle(title, 1, 0)
-                .stream()
-                .findFirst()
-                .map(Event::getTitle)
-                .orElse("Can't find Title"));
-    }*/
-
 
     @Test
     void createEvent() {

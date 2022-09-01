@@ -68,17 +68,6 @@ public class DBConfig {
         return dataSource;
     }
 
-
-    /*@Bean(name = "sessionFactory")
-    public LocalSessionFactoryBean hibernateSessionFactory(DataSource dataSource) {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[]{"com.assignment.WebMvc.*"});
-        sessionFactory.setHibernateProperties(hibernateProperties());
-        return sessionFactory;
-    }*/
-
-
     @Bean
     HibernateTransactionManager transactionManagerHib(SessionFactory sessionFactory) {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
